@@ -16,5 +16,5 @@ class User < ApplicationRecord
   validates_each :deposit do |record, attr, value|
     record.errors.add attr, "deposit should be in multiples of 5" unless !value || value % 5 == 0
   end
-
 end
+

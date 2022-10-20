@@ -16,3 +16,4 @@ FactoryBot.define do
     role { 1 }
   end
 end
+

@@ -3,6 +3,7 @@ class Api::V1::Users::RegistrationsController < ApplicationController
   include AuthenticateUser
   
   before_action :set_user, only: %i[update destroy]
+  before_action :require_user_is_valid!, only: %i[update destroy]
 
   def create
     @user = User.new(user_params)
@@ -59,4 +60,11 @@ class Api::V1::Users::RegistrationsController < ApplicationController
     def user_params_for_update
       params.require(:user).permit(:username, :email, :password, :password_confirmation, :current_password, :role)
     end
+
+    def require_user_is_valid!
+      render json: {
+        errors: 'password is incorrect or user not exist'
+      }, status: :unprocessable_entity unless @user&.valid_password?(params[:user][:current_password])
+    end
 end
+

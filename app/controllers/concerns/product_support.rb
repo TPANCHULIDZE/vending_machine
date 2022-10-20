@@ -1,3 +1,4 @@
+
 module ProductSupport
   include AuthenticateUser
 
@@ -29,3 +30,4 @@ module ProductSupport
     }, status: :unauthorized unless @user.seller?
   end
 end
+

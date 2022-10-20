@@ -10,3 +10,4 @@ module AuthenticateUser
     @user = User.find_by(id: decoded[:user_id])
   end
 end
+

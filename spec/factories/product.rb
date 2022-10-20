@@ -1,3 +1,5 @@
+require 'faker'
+
 FactoryBot.define do
   factory :product do
     product_name { Faker::Name.name }
@@ -6,3 +8,4 @@ FactoryBot.define do
     association :seller
   end
 end
+

@@ -1,3 +1,4 @@
+
 module Pagination
   PER_PAGE = 5
   FIRST_PAGE = 1
@@ -8,3 +9,4 @@ module Pagination
     @per_page = params_query[:per_page] ? params_query[:per_page].to_i : PER_PAGE
   end
 end
+

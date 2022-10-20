@@ -25,3 +25,4 @@ class Api::V1::Users::SessionsController < ApplicationController
       params.require(:user).permit(:username, :password)
     end
 end
+

@@ -14,3 +14,4 @@ module AccessToken
     return {user_id: nil}
   end
 end
+

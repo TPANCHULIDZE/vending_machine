@@ -25,3 +25,4 @@ RSpec.describe 'Routes', type: :routing do
     expect(delete: root + '/' + product_id).to route_to(root + '#destroy', product_id: product_id)
   end
 end
+
