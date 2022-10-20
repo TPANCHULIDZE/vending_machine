@@ -1,5 +1,5 @@
 class Api::V1::ProductsController < ApplicationController
-  include AuthenticateUser
+  include ProductSupport
   include Pagination
 
   before_action :set_user, except: %i[index show]
@@ -45,13 +45,13 @@ class Api::V1::ProductsController < ApplicationController
   def update
     if @product.update(product_params)
       render json: {
-        message: "update product successfully",
+        message: "updated product successfully",
         product: @product,
         user: @user
       }, status: :ok
     else
       render json: {
-        message: "update product failed",
+        message: "updated product failed",
         errors: @product.errors
       }, status: :unprocessable_entity
     end
@@ -74,30 +74,5 @@ class Api::V1::ProductsController < ApplicationController
   def product_params
     params.require(:product).permit(:product_name, :amount_aviable, :cost)
   end
-
-  def set_product
-    @product = Product.includes(:seller).find_by(id: params[:product_id])
-
-    render json: {
-      errors: ["Product not found"]
-    }, status: 404 unless @product
-  end
-
-  def require_user_sign_in!
-    render json: {
-      errors: ["You have to sign in first"]
-    }, status: :unauthorized unless @user
-  end
-
-  def require_user_is_author!
-    render json: {
-      errors: ["You are not allowed"]
-    }, status: :unauthorized if @user.id != @product.seller_id
-  end
-
-  def require_user_is_seller!
-    render json: {
-      errors: ["You have to be seller"]
-    }, status: :unauthorized unless @user.seller?
-  end
 end
+

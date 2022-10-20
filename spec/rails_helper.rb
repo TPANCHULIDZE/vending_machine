@@ -2,6 +2,7 @@
 require 'spec_helper'
 ENV['RAILS_ENV'] ||= 'test'
 require_relative '../config/environment'
+Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 # Prevent database truncation if the environment is production
 abort("The Rails environment is running in production mode!") if Rails.env.production?
 require 'rspec/rails'
@@ -69,5 +70,13 @@ RSpec.configure do |config|
     end
   end
 
+  config.expect_with :rspec do |c|
+    c.syntax = :expect
+  end
+
+  config.include Devise::Test::ControllerHelpers, :type => :controller
   config.include FactoryBot::Syntax::Methods
+  config.include Warden::Test::Helpers
+  config.include ApiHelper
+  config.include ProductsSpecHelper
 end

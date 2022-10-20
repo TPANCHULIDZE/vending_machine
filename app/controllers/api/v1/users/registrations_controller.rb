@@ -1,6 +1,7 @@
 class Api::V1::Users::RegistrationsController < ApplicationController
   include AccessToken
   include AuthenticateUser
+  
   before_action :set_user, only: %i[update destroy]
 
   def create

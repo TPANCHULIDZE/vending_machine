@@ -16,6 +16,8 @@ gem 'jwt'
 
 gem 'devise'
 
+gem 'faker'
+
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 # gem "jbuilder"
 

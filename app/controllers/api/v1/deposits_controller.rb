@@ -1,7 +1,5 @@
 class Api::V1::DepositsController < ApplicationController
-  VALIDATE_COINS = [5, 10, 20, 50, 100]
-
-  include AuthenticateUser
+  include DepositSupport
 
   before_action :set_user
   before_action :set_product, only: %i[buy]
@@ -14,7 +12,7 @@ class Api::V1::DepositsController < ApplicationController
     render json: {
       message: "#{@user.username} deposit",
       deposit: @user.deposit
-    }
+    }, status: :ok
   end
 
   def update
@@ -24,12 +22,12 @@ class Api::V1::DepositsController < ApplicationController
       render json: {
         message: "deposit update successfully",
         deposit: @user.deposit
-      }
+      }, status: :ok
     else
       render json: {
         message: "deposit update failed",
         errors: @user.errors
-      }
+      }, status: :unprocessable_entity
     end
   end
 
@@ -38,14 +36,14 @@ class Api::V1::DepositsController < ApplicationController
 
     if @user.save
       render json: {
-        message: "deposit update successfully",
+        message: "deposit reset successfully",
         deposit: @user.deposit
-      }
+      }, status: :ok
     else
       render json: {
-        message: "deposit update failed",
+        message: "deposit reset failed",
         errors: @user.errors
-      }
+      }, status: :unprocessable_entity
     end
   end
 
@@ -60,70 +58,17 @@ class Api::V1::DepositsController < ApplicationController
         product: @product,
         total: total_price,
         change: change
-      }
+      }, status: :ok
     else
       render json: {
-        errors: ["You have not enough money"],
+        errors: ["You have not enough money or amount is not aviable"],
         total_price: total_price,
-        deposit: @user.deposit
+        deposit: @user.deposit,
+        amount: amount,
+        amount_aviable: @product.amount_aviable
       }, status: :unprocessable_entity
     end
   end
-
-  private
-
-  def validate_coin
-    render json: {
-      errors: "coin value is not validate"
-    }, status: :unprocessable_entity unless VALIDATE_COINS.any? { |coin| coin == params[:coin].to_i}
-  end
-
-  def set_product
-    @product = Product.find_by(id: params[:product_id])
-
-    render json: {
-      errors: ["Product not found"]
-    }, status: 404 unless @product
-  end
-
-  def require_user_is_buyer!
-     render json: {
-      errors: ["You have to be buyer"]
-    }, status: :unauthorized unless @user.buyer?
-  end
-
-  def require_user_sign_in!
-    render json: {
-      errors: ["You have to sign in first"]
-    }, status: :unauthorized unless @user
-  end
-
-  def change
-    deposit = @user.deposit
-    changes = []
-
-    VALIDATE_COINS.reverse.each do |coin|
-      count = deposit / coin
-      deposit -= count * coin
-      count.times do
-        changes << coin
-      end
-    end
-
-    changes
-  end
-
-  def change_amount(amount)
-    return false if amount > @product.amount_aviable
-
-    @product.amount_aviable -= amount
-    @product.save 
-  end
-
-  def change_deposit(total_price, amount)
-    return false if total_price > @user.deposit || !change_amount(amount)
-
-    @user.deposit -= total_price
-    @user.save
-  end
 end
+
+
