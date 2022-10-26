@@ -18,6 +18,9 @@ gem 'devise'
 
 gem 'faker'
 
+gem 'rswag-api'
+gem 'rswag-ui'
+
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 # gem "jbuilder"
 
@@ -58,4 +61,5 @@ group :test do
   gem 'rspec-rails', '~> 6.0', '>= 6.0.1'
   gem 'shoulda-matchers', '~> 5.0'
   gem "factory_bot_rails"
+  gem 'rswag-specs'
 end
