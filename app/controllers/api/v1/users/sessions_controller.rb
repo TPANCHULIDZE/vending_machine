@@ -8,7 +8,7 @@ class Api::V1::Users::SessionsController < ApplicationController
       render json: {
         message: "Login Successfully",
         user: @user,
-        access_token: AccessToken.encode({username: @user.username, password: user_params[:password]})
+        access_token: AccessToken.encode(user_id: @user.id)
       }, status: :ok
     else
       render json: {
