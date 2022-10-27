@@ -6,12 +6,52 @@ info:
 paths:
   "/api/v1/products":
     get:
+      tags:
+      - product
       summary: list products
       responses:
         '200':
           description: successful
     post:
       summary: create product
+      tags:
+      - product
+      parameters: []
+      responses:
+        '201':
+          description: successful
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                product:
+                  type: object
+                  properties:
+                    product_name:
+                      type: string
+                    amount_aviable:
+                      type: integer
+                    cost:
+                      type: integer
+  "/api/v1/products/{product_id}":
+    parameters:
+    - name: product_id
+      in: path
+      description: product_id
+      required: true
+      schema:
+        type: string
+    get:
+      tags:
+      - product
+      summary: show product
+      responses:
+        '200':
+          description: successful
+    put:
+      summary: update product
       tags:
       - product
       parameters: []
@@ -24,28 +64,78 @@ paths:
             schema:
               type: object
               properties:
-                product_name:
-                  type: string
-                amount_aviable:
-                  type: integer
-                cost:
-                  type: integer
-  "/api/v1/products/{product_id}":
-    parameters:
-    - name: product_id
-      in: path
-      description: product_id
-      required: true
-      schema:
-        type: string
-    get:
-      summary: show product
+                user:
+                  type: object
+                  properties:
+                    product_name:
+                      type: string
+                    amount_aviable:
+                      type: integer
+                    cost:
+                      type: integer
+    delete:
+      tags:
+      - product
+      summary: delete product
       responses:
         '200':
           description: successful
+  "/api/v1/users/login":
+    post:
+      summary: login users
+      tags:
+      - user
+      parameters: []
+      responses: 
+        '201':
+          description: successful
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user:
+                  type: object
+                  properties: 
+                    username:
+                      type: string
+                    password:
+                      type: string
+  "/api/v1/users/":
+    post:
+      summary: create user
+      tags:
+      - user
+      parameters: []
+      responses:
+        '201':
+          description: successful
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user:
+                  type: object
+                  properties:
+                    username: 
+                      type: string
+                    email:
+                      type: string
+                    password:
+                      type: string
+                    password_confirmation:
+                      type: string
+                    role:
+                      type: integer
+                    deposit:
+                      type: integer
     put:
-      summary: update product
-      tags: update product
+      summary: update user
+      tags:
+      - user
       parameters: []
       responses:
         '200':
@@ -56,17 +146,82 @@ paths:
             schema:
               type: object
               properties:
-                product_name:
-                  type: string
-                amount_aviable:
-                  type: integer
-                cost:
-                  type: integer
+                user:
+                  type: object
+                  properties:
+                    username: 
+                      type: string
+                    email:
+                      type: string
+                    password:
+                      type: string
+                    password_confirmation:
+                      type: string
+                    current_password:
+                      type: string
+                    role:
+                      type: integer
+                    deposit:
+                      type: integer
     delete:
-      summary: delete product
+      summary: delete user
+      tags:
+      - user
       responses:
         '200':
           description: successful
+  '/api/v1/deposit':
+    get:
+      tags:
+      - deposit
+      summary: show deposit
+      responses:
+        '200':
+          description: successful
+    put:
+      summary: update deposit
+      tags:
+      - deposit
+      parameters: []
+      responses:
+        '200':
+          description: successful
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                coin:
+                  type: integer
+  '/api/v1/reset':
+    delete:
+      summary: reset deposit
+      tags:
+      - deposit
+      responses:
+        '200':
+          description: successful
+  '/api/v1/buy':
+    post:
+      summary: buy product
+      tags:
+      - deposit
+      parameters: []
+      responses:
+        '201':
+          description: successful
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                product_id:
+                  type: integer
+                amount:
+                  type: integer
+
 servers:
 - url: http://{defaultHost}
   variables:
